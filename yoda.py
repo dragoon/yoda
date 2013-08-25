@@ -1,8 +1,19 @@
 import bdb
+import types
 
 
 class Yoda(bdb.Bdb):
     run = 0
+
+    def _filter_locals(self, local_vars):
+        new_locals = []
+        for name, value in local_vars.items():
+            if name.startswith('__'):
+                continue
+            if isinstance(value, types.ModuleType):
+                continue
+            new_locals.append((name, value))
+        return new_locals
 
     def user_call(self, frame, args):
         name = frame.f_code.co_name or "<unknown>"
@@ -11,13 +22,12 @@ class Yoda(bdb.Bdb):
 
     def user_line(self, frame):
         print frame.f_locals['__file__'] + '_' + str(frame.f_lineno)
-        print [(var, value) for var, value in frame.f_locals.items() if not var.startswith('__')]
+        print self._filter_locals(frame.f_locals)
         self.set_step()
 
     def user_return(self, frame, value):
         name = frame.f_code.co_name or "<unknown>"
         print "return from", name, value
-        print "continue..."
         self.set_step()  # continue
 
     def user_exception(self, frame, exception):
