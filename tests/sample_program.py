@@ -13,3 +13,5 @@ def spam(arg):
     return result
 
 x = spam(8)
+
+print yoda.db.json_results
