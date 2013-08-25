@@ -16,12 +16,10 @@ class Yoda(bdb.Bdb):
         return new_locals
 
     def user_call(self, frame, args):
-        name = frame.f_code.co_name or "<unknown>"
-        print "call", name, args
         self.set_step()  # continue
 
     def user_line(self, frame):
-        print frame.f_locals['__file__'] + '_' + str(frame.f_lineno)
+        print frame.f_globals['__file__'] + '_' + str(frame.f_lineno)
         print self._filter_locals(frame.f_locals)
         self.set_step()
 
