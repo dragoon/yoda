@@ -6,6 +6,15 @@ import types
 class Yoda(bdb.Bdb):
     run = 0
     json_results = None
+    # TODO: remove one of those
+    not_instrumented_types = (types.ModuleType, types.BufferType, types.BuiltinFunctionType,
+                              types.TypeType, types.BuiltinMethodType, types.ClassType,
+                              types.CodeType, types.ComplexType, types.FileType, types.FrameType,
+                              types.FunctionType, types.GeneratorType, types.GetSetDescriptorType,
+                              types.SliceType, types.UnboundMethodType, types.XRangeType)
+    instrumented_types = (types.DictType, types.StringType, types.BooleanType, types.FloatType,
+                          types.IntType, types.ListType, types.LongType, types.NoneType,
+                          types.ObjectType, types.UnicodeType, types.TupleType)
 
     def __init__(self):
         bdb.Bdb.__init__(self)
@@ -16,7 +25,7 @@ class Yoda(bdb.Bdb):
         for name, value in local_vars.items():
             if name.startswith('__'):
                 continue
-            if isinstance(value, types.ModuleType):
+            if isinstance(value, self.not_instrumented_types):
                 continue
             new_locals.append((name, value))
         return new_locals
