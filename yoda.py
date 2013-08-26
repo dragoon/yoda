@@ -18,6 +18,9 @@ class Yoda(bdb.Bdb):
 
     def __init__(self):
         bdb.Bdb.__init__(self)
+        self._clear_cache()
+
+    def _clear_cache(self):
         self.json_results = defaultdict(lambda: defaultdict(list))
 
     def _filter_locals(self, local_vars):
@@ -40,13 +43,13 @@ class Yoda(bdb.Bdb):
     def user_return(self, frame, value):
         name = frame.f_code.co_name or "<unknown>"
         print self.json_results
+        self._clear_cache()
         print "return from", name, value
         self.set_step()  # continue
 
     def user_exception(self, frame, exception):
         name = frame.f_code.co_name or "<unknown>"
         print "exception in", name, exception
-        print "continue..."
         self.set_continue()  # continue
 
 db = Yoda()
