@@ -42,6 +42,7 @@ class Yoda(bdb.Bdb):
 
     def user_return(self, frame, value):
         name = frame.f_code.co_name or "<unknown>"
+        # TODO: persistently store instead of print
         print self.json_results
         self._clear_cache()
         print "return from", name, value
