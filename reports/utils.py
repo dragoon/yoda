@@ -1,14 +1,8 @@
-from os import path
-
-from django.template import Template, Context
-from django.conf import settings
-import django.template.loader
-
-settings.configure()
+from jinja2 import Environment, PackageLoader
+env = Environment(loader=PackageLoader('reports', 'templates/default'))
 
 
 def render_report(template_name, context):
-    t = Template(open(path.join(path.dirname(__file__), 'templates/yoda/default/%(name)s' % {
-        'name': template_name})).read())
-    return t.render(Context(context))
+    t = env.get_template(template_name)
+    return t.render(context)
 
