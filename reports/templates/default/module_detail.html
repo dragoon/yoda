@@ -8,15 +8,15 @@
 {% block title %}: {{ title }}{% endblock %}
 
 {% block content %}
-    {% include "coverage/default/nav.html" %}
+    {% include "nav.html" %}
     <div id="module-content-header">
         <h1>
             <span id="module-name">{{ title }}</span>:
             {{ total_count }} total statements,
-            <span class="{{ severity }}">{{ percent_covered|floatformat }}% covered</span>
+            <span class="{{ severity }}">{{ percent_covered }}% covered</span>
         </h1>
 
-        <p>Generated: {% now "d E Y H:i T" %}</p>
+        <p>Generated: {{ date_gen.strftime('%d %B %Y %H:%M %Z')}}</p>
         <p>Source file: {{ source_file }}</p>
         <p>
             Stats:
@@ -33,5 +33,5 @@
             {% endfor %}
         </ol>
     </div>
-    {% include "coverage/default/nav.html" %}
+    {% include "nav.html" %}
 {% endblock %}

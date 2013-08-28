@@ -7,8 +7,8 @@ from .utils import render_report
 
 
 class Context(dict):
-    def __init__(self, **kwargs):
-        super(Context, self).__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(Context, self).__init__(*args, **kwargs)
         self['date_gen'] = datetime.now()
 
 
@@ -27,6 +27,7 @@ def html_report(outdir, modules):
 
     # Create detail files for covered files
     for module_name, values in modules:
+        values = Context(values)
         html_module_detail(os.path.join(m_dir, module_name + '.html'), values)
 
     fo = codecs.open(os.path.join(outdir, 'index.html'), 'wb+', 'utf-8')
