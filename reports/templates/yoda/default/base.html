@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+      xml:lang="{% firstof LANGUAGE_CODE 'en' %}"
+      lang="{% firstof LANGUAGE_CODE 'en' %}">
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+    <title>Test coverage report{% block title %}{% endblock %}</title>
+    {% block css %}
+        <link type="text/css" rel="stylesheet" href="static/css/main.css" media="screen"/>
+    {% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+</body>
+</html>
