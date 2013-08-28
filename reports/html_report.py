@@ -1,8 +1,15 @@
 import codecs
 import os
 import shutil
+from datetime import datetime
 from .html_module_detail import html_module_detail
 from .utils import render_report
+
+
+class Context(dict):
+    def __init__(self, **kwargs):
+        super(Context, self).__init__(**kwargs)
+        self['date_gen'] = datetime.now()
 
 
 def html_report(outdir, modules):
@@ -13,7 +20,6 @@ def html_report(outdir, modules):
 
     It uses `templates.coverage.base.html` to create the index page.
     """
-    context = {}
     m_subdirname = 'modules'
     m_dir = os.path.join(outdir, m_subdirname)
     if not os.path.exists(m_dir):
@@ -24,7 +30,7 @@ def html_report(outdir, modules):
         html_module_detail(os.path.join(m_dir, module_name + '.html'), values)
 
     fo = codecs.open(os.path.join(outdir, 'index.html'), 'wb+', 'utf-8')
-    response = render_report('index.html', context)
+    response = render_report('index.html', Context())
     fo.write(response)
     fo.close()
 
