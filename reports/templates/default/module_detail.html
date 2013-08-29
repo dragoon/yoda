@@ -29,7 +29,14 @@
     <div id="source-listing">
         <ol>
             {% for line in source_lines %}
-                <li class="{{ line.line_status }}">{{ line.source_line|safe }}</li>
+                <li class="{{ line.line_status }}">
+                    {{ line.source_line|safe }}
+                    <span class="values">
+                        {% for value in line.variables %}
+                        {{ value }}
+                        {% endfor %}
+                    </span>
+                </li>
             {% endfor %}
         </ol>
     </div>
