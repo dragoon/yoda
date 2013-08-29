@@ -37,4 +37,5 @@ def html_report(outdir, modules):
 
     # Copy static files
     shutil.rmtree(os.path.join(outdir, 'static'), ignore_errors=True)
-    shutil.copytree('reports/static', os.path.join(outdir, 'static'))
+    static_path = os.path.abspath(os.path.dirname(__file__))
+    shutil.copytree(os.path.join(static_path, 'static'), os.path.join(outdir, 'static'))
