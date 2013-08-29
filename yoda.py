@@ -1,6 +1,10 @@
 import bdb
 from collections import defaultdict
 import types
+import os.path
+
+from settings import REPORT_DIR
+from reports.html_report import html_report
 
 
 class Yoda(bdb.Bdb):
@@ -34,18 +38,21 @@ class Yoda(bdb.Bdb):
         return new_locals
 
     def user_call(self, frame, args):
+        # TODO: may be also flush on call
         self.set_step()  # continue
 
     def user_line(self, frame):
-        self.json_results[frame.f_globals['__file__']][frame.f_lineno].append(self._filter_locals(frame.f_locals))
+        self.json_results[frame.f_globals['__file__']][frame.f_lineno-1].append(self._filter_locals(frame.f_locals))
         self.set_step()
 
     def user_return(self, frame, value):
-        name = frame.f_code.co_name or "<unknown>"
         # TODO: persistently store instead of print
-        print self.json_results
-        self._clear_cache()
-        print "return from", name, value
+        if self.json_results:
+            print self.json_results
+            for module_file, lines in self.json_results.iteritems():
+                html_report(REPORT_DIR, [(os.path.basename(module_file),
+                                          {'source_file': module_file, 'lines': lines})])
+            self._clear_cache()
         self.set_step()  # continue
 
     def user_exception(self, frame, exception):
