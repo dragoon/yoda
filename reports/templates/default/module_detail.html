@@ -12,8 +12,7 @@
     <div id="module-content-header">
         <h1>
             <span id="module-name">{{ title }}</span>:
-            {{ total_count }} total statements,
-            <span class="{{ severity }}">{{ percent_covered }}% covered</span>
+            {{ total_count }} total statements
         </h1>
 
         <p>Generated: {{ date_gen.strftime('%d %B %Y %H:%M %Z')}}</p>
@@ -32,7 +31,7 @@
                 <li class="{{ line.line_status }}">
                     {{ line.source_line|safe }}
                     <span class="values">
-                        {% for value in line.variables %}
+                        {% for var_name, value in line.variables %}
                         {{ value }}
                         {% endfor %}
                     </span>
