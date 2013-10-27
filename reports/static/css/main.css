@@ -123,17 +123,21 @@ pre {
     margin-bottom: 24px;
 }
 
-#source-listing ol {
+#source-listing table {
     padding: 0 0 0 50px;
     width: 90%;
     font-family: monospace;
-    list-style-position: outside;
 }
 
-#source-listing ol li {
+#source-listing table tr {
     line-height: 18px;
     font-size: small;
     min-height: 18px;
+}
+
+#source-listing .values {
+    display: inline-block;
+    margin-left: 1em;
 }
 
 #module-name {

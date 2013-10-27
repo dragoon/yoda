@@ -26,18 +26,28 @@
         </p>
     </div>
     <div id="source-listing">
-        <ol>
+        <table>
             {% for line in source_lines %}
-                <li class="{{ line.line_status }}">
+            <tr>
+                <td>
+                    {{ loop.index }}.
+                </td>
+                <td class="{{ line.line_status }}">
                     {{ line.source_line|safe }}
+                </td>
+                <td>
                     <span class="values">
-                        {% for var_name, value in line.variables %}
-                        {{ value }}
+                        {% for iter_values in line.variables %}
+                            {% for name, value in iter_values %}
+                                {{ name }}={{ value }}
+                                {% if not loop.last %}, {% endif %}
+                            {% endfor %}<br>
                         {% endfor %}
                     </span>
-                </li>
+                </td>
+            </tr>
             {% endfor %}
-        </ol>
+        </table>
     </div>
     {% include "nav.html" %}
 {% endblock %}
