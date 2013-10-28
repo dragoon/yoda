@@ -22,9 +22,9 @@ def html_module_detail(filename, values):
              codecs.open(values['source_file'], 'r', 'utf-8').readlines()]):
         line_dict = {'source_line': highlight(source_line, python_lexer, html_formatter),
                      'line_status': 'ignored', 'variables': []}
-        if i in values['lines']:
+        if str(i) in values['lines']:
             line_dict['line_status'] = 'executed'
-            line_dict['variables'] = values['lines'][i]
+            line_dict['variables'] = values['lines'][str(i)]
         source_lines.append(line_dict)
 
     fo = codecs.open(filename, 'wb+', 'utf-8')

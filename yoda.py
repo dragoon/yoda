@@ -2,8 +2,10 @@ import bdb
 from collections import defaultdict
 import types
 import os.path
+from pymongo import MongoClient
+from datetime import datetime
 
-from settings import REPORT_DIR
+import settings
 from reports.html_report import html_report
 
 
@@ -22,6 +24,9 @@ class Yoda(bdb.Bdb):
 
     def __init__(self):
         bdb.Bdb.__init__(self)
+        if not settings.DEBUG:
+            self.client = MongoClient()
+            self.db = self.client['yoda']
         self._clear_cache()
 
     def _clear_cache(self):
@@ -42,16 +47,27 @@ class Yoda(bdb.Bdb):
         self.set_step()  # continue
 
     def user_line(self, frame):
-        self.json_results[frame.f_globals['__file__']][frame.f_lineno-1].append(self._filter_locals(frame.f_locals))
+        # str line number because mongo do not accept int keys
+        lineno = str(frame.f_lineno-1)
+        self.json_results[frame.f_globals['__file__']][lineno].append(self._filter_locals(frame.f_locals))
         self.set_step()
 
     def user_return(self, frame, value):
         # TODO: persistently store instead of print
         if self.json_results:
-            print self.json_results
             for module_file, lines in self.json_results.iteritems():
-                html_report(REPORT_DIR, [(os.path.basename(module_file),
-                                          {'source_file': module_file, 'lines': lines})])
+                if settings.DEBUG:
+                    print module_file
+                    print lines
+                else:
+                    collection_name, _ = os.path.splitext(os.path.basename(module_file))
+                    collection = self.db[module_file]
+                    item = {'revision': 1,
+                            'timestamp': datetime.utcnow(),
+                            'lines': lines}
+                    collection.insert(item)
+                html_report(settings.REPORT_DIR, [(os.path.basename(module_file),
+                                                   {'source_file': module_file, 'lines': lines})])
             self._clear_cache()
         self.set_step()  # continue
 
