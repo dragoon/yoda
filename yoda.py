@@ -53,7 +53,6 @@ class Yoda(bdb.Bdb):
         self.set_step()
 
     def user_return(self, frame, value):
-        # TODO: persistently store instead of print
         if self.json_results:
             for module_file, lines in self.json_results.iteritems():
                 if settings.DEBUG:
@@ -66,8 +65,10 @@ class Yoda(bdb.Bdb):
                             'timestamp': datetime.utcnow(),
                             'lines': lines}
                     collection.insert(item)
-                html_report(settings.REPORT_DIR, [(os.path.basename(module_file),
-                                                   {'source_file': module_file, 'lines': lines})])
+                if settings.HTML_REPORT:
+                    html_report(settings.REPORT_DIR, [(os.path.basename(module_file),
+                                                       {'source_file': module_file,
+                                                        'lines': lines})])
             self._clear_cache()
         self.set_step()  # continue
 
