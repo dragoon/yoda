@@ -25,7 +25,7 @@ class Yoda(bdb.Bdb):
     def __init__(self):
         bdb.Bdb.__init__(self)
         if not settings.DEBUG:
-            self.client = MongoClient()
+            self.client = MongoClient(settings.MONGODB_URI)
             self.db = self.client['yoda']
         self._clear_cache()
 
