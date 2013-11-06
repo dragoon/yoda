@@ -60,10 +60,11 @@ class Yoda(bdb.Bdb):
                     print lines
                 else:
                     collection_name, _ = os.path.splitext(os.path.basename(module_file))
-                    collection = self.db[module_file]
+                    collection = self.db['file']
                     item = {'revision': 1,
+                            'filename': module_file,
                             'timestamp': datetime.utcnow(),
-                            'lines': lines}
+                            'lines': [{'lineno': lineno, 'data': data} for lineno, data in lines.iteritems()]}
                     collection.insert(item)
                 if settings.HTML_REPORT:
                     html_report(settings.REPORT_DIR, [(os.path.basename(module_file),
