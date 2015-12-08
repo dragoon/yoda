@@ -9,8 +9,6 @@ instrumentation (like Python). This system should be able to seamlessly capture 
 code and store them somewhere, with further possibility to easily retrieve saved values. The system should also provide 
 an API to the storage in order to make the data accessible for navigation and display in third-party applications.
 
-## Objectives
-
 ## Specification and scope of the project
 
 ### Database
@@ -28,11 +26,17 @@ of space and time
 * Extend the actual code to include more objects. (Low priority)
 * Translate the actual code in order to make it compatible with Python 3.
 * Establish a connection with the git repository to get the commit identifier.
+#### Loops
+    1. Inter-fucntion navigation in the loop
+    2. Variable storing techniques : full, sample (then what size ?), ranger (if applicable), other ?
+    3. Conditions --> proportion of execution times (how often ?)
+    4. Ability to plot values distribution for a specified variable in aggregations
 
 ### Interface
-* Develop an interface in HTML/Python in order to viszalize the results.
+* Develop an interface in HTML/Python in order to visualize the results.
 * The framework "Django MongoDB Engine" will be used to develop the interface
 * In this interface th euser should have at least these possibilites :
     * Filter the diferent runs by date, commit identifier and author of the run
     * Delete a run
 * The user should be able to open at least two different runs in order to be able to compare them
+    *To add : Detailed workflow on comparisons
