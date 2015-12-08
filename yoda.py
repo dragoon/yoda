@@ -24,7 +24,7 @@ class Yoda(bdb.Bdb):
 
     def __init__(self):
         bdb.Bdb.__init__(self)
-        if not settings.DEBUG:
+        if not settings.DEBUG: # If DEBUG is to FALSE connect to mongodb
             self.client = MongoClient(settings.MONGODB_URI)
             self.db = self.client['yoda']
         self._clear_cache()
@@ -56,8 +56,12 @@ class Yoda(bdb.Bdb):
         if self.json_results:
             for module_file, lines in self.json_results.iteritems():
                 if settings.DEBUG:
-                    print module_file
-                    print lines
+                    #print(module_file)
+                    #print(lines)
+                    for lineno, data in lines.iteritems():
+                        print(lineno)
+                        print(data)
+                    
                 else:
                     collection_name, _ = os.path.splitext(os.path.basename(module_file))
                     collection = self.db['file']
