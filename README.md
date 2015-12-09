@@ -39,4 +39,4 @@ of space and time
   * Filter the diferent runs by date, commit identifier and author of the run
   * Delete a run
 * The user should be able to open at least two different runs in order to be able to compare them
-  *To add : Detailed workflow on comparisons
+  * To add : Detailed workflow on comparisons
